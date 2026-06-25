@@ -12,7 +12,7 @@ stage('Checkout') {
 
 steps {
 git branch: 'main',
-url: 'https://github.com/company/project.git'
+url: 'https://github.com/pavaniam214/jenkins-cicd-project.git'
 }
 
 }
