@@ -21,7 +21,7 @@ stage('Build') {
 steps {
 sh '''
 docker build 
--t dockerhub-user/flask-app 
+-t beripavankumar214/flask-app 
 -f docker/Dockerfile .
 '''
 }
