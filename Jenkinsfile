@@ -1,80 +1,64 @@
 pipeline {
 
-agent any
+    agent any
 
-environment {
-DOCKER_IMAGE='beripavankumar214/flask-app'
-}
-
-stages {
-
-stage('Checkout') {
-
-steps {
-git branch: 'main',
-url: 'https://github.com/pavaniam214/jenkins-cicd-project.git'
-}
-
-}
-
-stage('Build') {
-steps {
-sh '''
-docker build -t beripavankumar214/flask-app:latest -f docker/Dockerfile .
-'''
-}
-}
-
-
-stage('Test') {
-
-steps {
-
-sh '''
-echo Testing Complete
-'''
-
-}
-
-}
-
-stage('Push Image') {
-steps {
-
-```
-    withCredentials([
-        usernamePassword(
-            credentialsId: 'dockerhub',
-            usernameVariable: 'USER',
-            passwordVariable: 'PASS'
-        )
-    ]) {
-
-        sh '''
-        echo "$PASS" | docker login \
-        -u "$USER" \
-        --password-stdin
-
-        docker push $DOCKER_IMAGE
-        '''
+    environment {
+        DOCKER_IMAGE = 'beripavankumar214/flask-app:latest'
     }
-}
-```
 
-}
+    stages {
 
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                url: 'https://github.com/pavaniam214/jenkins-cicd-project.git'
+            }
+        }
 
-stage('Deploy') {
+        stage('Build') {
+            steps {
+                sh '''
+                docker build -t $DOCKER_IMAGE -f docker/Dockerfile .
+                '''
+            }
+        }
 
-steps {
+        stage('Test') {
+            steps {
+                sh '''
+                echo Testing Complete
+                '''
+            }
+        }
 
-sh '''
-kubectl apply -f k8s/
-'''
-}
+        stage('Push Image') {
+            steps {
 
-}
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'dockerhub',
+                        usernameVariable: 'USER',
+                        passwordVariable: 'PASS'
+                    )
+                ]) {
 
-}
+                    sh '''
+                    echo "$PASS" | docker login \
+                    -u "$USER" \
+                    --password-stdin
 
+                    docker push $DOCKER_IMAGE
+                    '''
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh '''
+                kubectl apply -f k8s/
+                '''
+            }
+        }
+    }
 }
