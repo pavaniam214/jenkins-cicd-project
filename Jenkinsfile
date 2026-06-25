@@ -54,7 +54,7 @@ passwordVariable:'Pavaniam214@'
 ]) {
 
 sh '''
-docker login -u $USER -p $PASS
+docker login -u $beripavankumar214 -p $Pavaniam214@
 
 docker push $DOCKER_IMAGE
 '''
