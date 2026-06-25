@@ -3,7 +3,7 @@ pipeline {
 agent any
 
 environment {
-DOCKER_IMAGE='dockerhub-user/flask-app'
+DOCKER_IMAGE='beripavankumar214/flask-app'
 }
 
 stages {
@@ -18,16 +18,15 @@ url: 'https://github.com/pavaniam214/jenkins-cicd-project.git'
 }
 
 stage('Build') {
-
 steps {
-
 sh '''
-docker build -t $DOCKER_IMAGE .
+docker build 
+-t dockerhub-user/flask-app 
+-f docker/Dockerfile .
 '''
-
+}
 }
 
-}
 
 stage('Test') {
 
@@ -48,8 +47,8 @@ steps {
 withCredentials([
 usernamePassword(
 credentialsId:'dockerhub',
-usernameVariable:'USER',
-passwordVariable:'PASS'
+usernameVariable:'beripavankumar214',
+passwordVariable:'Pavaniam214@'
 )
 
 ]) {
