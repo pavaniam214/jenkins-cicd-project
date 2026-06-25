@@ -39,29 +39,30 @@ echo Testing Complete
 }
 
 stage('Push Image') {
-
 steps {
 
-withCredentials([
-usernamePassword(
-credentialsId:'dockerhub',
-usernameVariable:'beripavankumar214',
-passwordVariable:'Pavaniam214@'
-)
+```
+    withCredentials([
+        usernamePassword(
+            credentialsId: 'dockerhub',
+            usernameVariable: 'USER',
+            passwordVariable: 'PASS'
+        )
+    ]) {
 
-]) {
+        sh '''
+        echo "$PASS" | docker login \
+        -u "$USER" \
+        --password-stdin
 
-sh '''
-docker login -u $beripavankumar214 -p $Pavaniam214@
-
-docker push $DOCKER_IMAGE
-'''
+        docker push $DOCKER_IMAGE
+        '''
+    }
+}
+```
 
 }
 
-}
-
-}
 
 stage('Deploy') {
 
