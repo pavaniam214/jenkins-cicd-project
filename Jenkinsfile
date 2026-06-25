@@ -20,9 +20,7 @@ url: 'https://github.com/pavaniam214/jenkins-cicd-project.git'
 stage('Build') {
 steps {
 sh '''
-docker build 
--t beripavankumar214/flask-app 
--f docker/Dockerfile .
+docker build -t beripavankumar214/flask-app:latest -f docker/Dockerfile .
 '''
 }
 }
